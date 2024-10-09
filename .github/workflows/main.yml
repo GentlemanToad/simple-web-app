@@ -11,12 +11,12 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout code
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3  # Updated to the latest version
 
       - name: Set up Node.js
-        uses: actions/setup-node@v2
+        uses: actions/setup-node@v3  # Updated to the latest version
         with:
-          node-version: '16'  # Adjust the Node.js version as needed
+          node-version: '20'  # Set to Node.js version 20
 
       - name: Install dependencies
         run: npm install  # or your package manager command
@@ -44,8 +44,8 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout code
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3  # Updated to the latest version
 
       - name: Deploy to GitHub Pages
         id: deployment
-        uses: actions/deploy-pages@v4  # or specify a version like v4.0.0
+        uses: actions/deploy-pages@v4  # Ensure this is the latest version
