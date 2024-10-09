@@ -3,7 +3,7 @@ name: Deploy GitHub Pages Site
 on:
   push:
     branches:
-      - main  # Change this to your default branch if different
+      - main  # Ensure this is your default branch
 
 jobs:
   # Build job
@@ -13,11 +13,15 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v3  # Use the latest version
 
+      - name: Check directory structure
+        run: |
+          ls -R simple-web-app  # List files in the simple-web-app directory to verify structure
+
       - name: Upload static files
-        uses: actions/upload-artifact@v3  # Ensure you're using the latest version
+        uses: actions/upload-artifact@v4  # Ensure you're using the latest version
         with:
           name: github-pages  # Name of the artifact
-          path: simple-web-app/  # Path to the directory containing your static files
+          path: simple-web-app/*  # Upload all files in the simple-web-app directory
 
   # Deploy job
   deploy:
@@ -33,7 +37,7 @@ jobs:
         uses: actions/checkout@v3  # Use the latest version
 
       - name: Download artifact
-        uses: actions/download-artifact@v3  # Use the latest version
+        uses: actions/download-artifact@v4  # Use the latest version
         with:
           name: github-pages  # Name of the artifact to download
 
