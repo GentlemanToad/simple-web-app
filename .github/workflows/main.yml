@@ -13,22 +13,14 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v3  # Use the latest version
 
-      - name: Set up Node.js
-        uses: actions/setup-node@v3  # Use the latest version
-        with:
-          node-version: '20'  # Use Node.js version 20
-
-      - name: Install dependencies
-        run: npm install  # Adjust this command based on your project
-
       - name: Build project
-        run: npm run build  # Adjust this command based on your project
+        run: echo "No build step needed for static files."  # Placeholder step
 
-      - name: Upload build artifacts
+      - name: Upload static files
         uses: actions/upload-artifact@v3  # Use the latest version
         with:
           name: github-pages  # Name of the artifact
-          path: ./dist  # Path to your build output directory (change if needed)
+          path: ./simple-web-app  # Path to the directory containing your static files
 
   # Deploy job
   deploy:
