@@ -1,4 +1,4 @@
-name: Deploy to GitHub Pages
+name: Deploy GitHub Pages Site
 
 on:
   push:
@@ -11,41 +11,41 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout code
-        uses: actions/checkout@v3  # Updated to the latest version
+        uses: actions/checkout@v3  # Use the latest version
 
       - name: Set up Node.js
-        uses: actions/setup-node@v3  # Updated to the latest version
+        uses: actions/setup-node@v3  # Use the latest version
         with:
-          node-version: '20'  # Set to Node.js version 20
+          node-version: '20'  # Use Node.js version 20
 
       - name: Install dependencies
-        run: npm install  # or your package manager command
+        run: npm install  # Adjust this command based on your project
 
       - name: Build project
-        run: npm run build  # Adjust this command to your build process
+        run: npm run build  # Adjust this command based on your project
 
       - name: Upload build artifacts
-        uses: actions/upload-pages-artifact@v1
+        uses: actions/upload-artifact@v3  # Use the latest version
         with:
-          path: ./dist  # Change to the path where your build artifacts are generated
+          name: github-pages  # Name of the artifact
+          path: ./dist  # Path to your build output directory (change if needed)
 
   # Deploy job
   deploy:
     needs: build
 
     permissions:
-      pages: write      # Required to deploy to Pages
-      id-token: write   # Verify the deployment's source
-
-    environment:
-      name: github-pages
-      url: ${{ steps.deployment.outputs.page_url }}
+      pages: write      # Grant permission to deploy to GitHub Pages
+      id-token: write   # Grant permission to verify the deployment source
 
     runs-on: ubuntu-latest
     steps:
       - name: Checkout code
-        uses: actions/checkout@v3  # Updated to the latest version
+        uses: actions/checkout@v3  # Use the latest version
 
       - name: Deploy to GitHub Pages
         id: deployment
-        uses: actions/deploy-pages@v4  # Ensure this is the latest version
+        uses: actions/deploy-pages@v4  # Ensure you're using the latest version
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}  # Use the GitHub token for authentication
+          artifact_name: github-pages  # Name of the artifact to deploy
