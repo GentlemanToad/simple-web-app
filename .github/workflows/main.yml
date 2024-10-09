@@ -13,14 +13,11 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v3  # Use the latest version
 
-      - name: Build project
-        run: echo "No build step needed for static files."  # Placeholder step
-
       - name: Upload static files
-        uses: actions/upload-artifact@v3  # Use the latest version
+        uses: actions/upload-artifact@v3  # Ensure you're using the latest version
         with:
           name: github-pages  # Name of the artifact
-          path: ./simple-web-app  # Path to the directory containing your static files
+          path: simple-web-app/  # Path to the directory containing your static files
 
   # Deploy job
   deploy:
@@ -34,6 +31,11 @@ jobs:
     steps:
       - name: Checkout code
         uses: actions/checkout@v3  # Use the latest version
+
+      - name: Download artifact
+        uses: actions/download-artifact@v3  # Use the latest version
+        with:
+          name: github-pages  # Name of the artifact to download
 
       - name: Deploy to GitHub Pages
         id: deployment
