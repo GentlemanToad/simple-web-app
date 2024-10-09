@@ -3,25 +3,49 @@ name: Deploy to GitHub Pages
 on:
   push:
     branches:
-      - main  # Trigger on pushes to the main branch
+      - main  # Change this to your default branch if different
 
 jobs:
-  deploy:
+  # Build job
+  build:
     runs-on: ubuntu-latest
-
     steps:
       - name: Checkout code
-        uses: actions/checkout@v3  # Update to v3
-      
-      - name: Deploy to GitHub Pages
-        uses: peaceiris/actions-gh-pages@v3
+        uses: actions/checkout@v2
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v2
         with:
-          publish_dir: ./  # Directory to publish
-          publish_branch: gh-pages  # Specify the branch to publish to
-          github_token: ${{ secrets.GITHUB_TOKEN }}  # Use the GitHub token for authentication
-          allow_empty_commit: false
-          keep_files: false
-          force_orphan: false
-          enable_jekyll: false
-          disable_nojekyll: false
-          exclude_assets: .github
+          node-version: '16'  # Adjust the Node.js version as needed
+
+      - name: Install dependencies
+        run: npm install  # or your package manager command
+
+      - name: Build project
+        run: npm run build  # Adjust this command to your build process
+
+      - name: Upload build artifacts
+        uses: actions/upload-pages-artifact@v1
+        with:
+          path: ./dist  # Change to the path where your build artifacts are generated
+
+  # Deploy job
+  deploy:
+    needs: build
+
+    permissions:
+      pages: write      # Required to deploy to Pages
+      id-token: write   # Verify the deployment's source
+
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4  # or specify a version like v4.0.0
