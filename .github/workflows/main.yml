@@ -3,25 +3,25 @@ name: Deploy to GitHub Pages
 on:
   push:
     branches:
-      - main
-  workflow_dispatch:
+      - main  # Trigger on pushes to the main branch
 
 jobs:
   deploy:
     runs-on: ubuntu-latest
-    env:
-      FORCE_JAVASCRIPT_ACTIONS_TO_NODE20: true  # Force the use of Node.js 20
+
     steps:
-      - name: Checkout repository
-        uses: actions/checkout@v3
-
-      - name: Check Git Configuration
-        run: |
-          git --version
-          git config --list
-
+      - name: Checkout code
+        uses: actions/checkout@v2
+      
       - name: Deploy to GitHub Pages
         uses: peaceiris/actions-gh-pages@v3
         with:
-          publish_dir: ./
-          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: ./  # Directory to publish
+          publish_branch: gh-pages  # Specify the branch to publish to
+          github_token: ${{ secrets.GITHUB_TOKEN }}  # Use the GitHub token for authentication
+          allow_empty_commit: false
+          keep_files: false
+          force_orphan: false
+          enable_jekyll: false
+          disable_nojekyll: false
+          exclude_assets: .github
